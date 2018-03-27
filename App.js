@@ -3,28 +3,32 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import CameraView from './components/CameraView';
 
+var cameraW = 200;
+var cameraH = 260;
+
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{backgroundColor:'#E19'}}>
-        <CameraView style={styles.camera} />
-        <Text>hrhr</Text>
-      </View>
+    //  <View>
+        <CameraView style={styles.camera}/>
+        //<Text>hrhr</Text>
+      //</View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+ container: {
     flex: 1,
     backgroundColor: '#D0F',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  camera:{
-    width:100,
-    height:100,
+  'camera':{
+    alignSelf:'center',
+    width:cameraW,
+    height:cameraH,
+    top:50,
     backgroundColor:'#E19'
   }
 });
