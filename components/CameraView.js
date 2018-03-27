@@ -2,18 +2,23 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Camera, Permissions } from 'expo';
 
-var leftCheekPosition = {x:0, y:0}
-var leftEyePosition = {x:0, y:0}
-var noseBasePosition = {x:0, y:0}
-var rightCheekPosition = {x:0, y:0}
-var rightEyePosition = {x:0, y:0}
-var rightMouthPosition = {x:0, y:0}
 
 export default class CameraView extends Component {
-  state = {
-    hasCameraPermission: null,
-    type: Camera.Constants.Type.front,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasCameraPermission: null,
+      type: Camera.Constants.Type.front,
+
+      leftCheekPosition: {x:0, y:0},
+      leftEyePosition: {x:0, y:0},
+      noseBasePosition: {x:0, y:0},
+      rightCheekPosition: {x:0, y:0},
+      rightEyePosition: {x:0, y:0},
+      rightMouthPosition: {x:0, y:0}
+    };
+    this.onFacesDetected = this.onFacesDetected.bind(this);
+  }
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -21,8 +26,23 @@ export default class CameraView extends Component {
   }
 
   onFacesDetected(faces){
-    if(faces.faces.length>0)
-      console.log(faces)
+    if(faces.faces.length>0){
+      let face = faces.faces[0];
+
+      //check if bulk update is better
+      if(face.hasOwnProperty("leftCheekPosition"))
+        this.setState({leftCheekPosition:face.leftCheekPosition});
+      if(face.hasOwnProperty("leftEyePosition"))
+        this.setState({leftEyePosition:face.leftEyePosition});
+      if(face.hasOwnProperty("noseBasePosition"))
+        this.setState({noseBasePosition:face.noseBasePosition});
+      if(face.hasOwnProperty("rightCheekPosition"))
+        this.setState({rightCheekPosition:face.rightCheekPosition});
+      if(face.hasOwnProperty("rightEyePosition"))
+        this.setState({rightEyePosition:face.rightEyePosition});
+      if(face.hasOwnProperty("rightMouthPosition"))
+        this.setState({rightMouthPosition:face.rightMouthPosition});
+    }
   }
 
   render() {
@@ -41,18 +61,24 @@ export default class CameraView extends Component {
             >
 
 
-            <View style={{width:4, height:4, backgroundColor:'#F33',
-              top:leftCheekPosition.x, left:leftCheekPosition.y}}/>
-            <View style={{width:4, height:4, backgroundColor:'#F33',
-              top:leftEyePosition.x, left:leftEyePosition.y}}/>
-            <View style={{width:4, height:4, backgroundColor:'#F33',
-              top:noseBasePosition.x, left:noseBasePosition.y}}/>
-            <View style={{width:4, height:4, backgroundColor:'#F33',
-              top:rightCheekPosition.x, left:rightCheekPosition.y}}/>
-            <View style={{width:4, height:4, backgroundColor:'#F33',
-              top:rightEyePosition.x, left:rightEyePosition.y}}/>
-            <View style={{width:4, height:4, backgroundColor:'#F33',
-              top:rightMouthPosition.x, left:rightMouthPosition.y}}/>
+            <View style={{width:4, height:4, backgroundColor:'#F33', position:'absolute',
+              top:this.state.leftCheekPosition.y,
+              left:this.state.leftCheekPosition.x}}/>
+            <View style={{width:4, height:4, backgroundColor:'#60D', position:'absolute',
+              top:this.state.leftEyePosition.y,
+              left:this.state.leftEyePosition.x}}/>
+            <View style={{width:4, height:4, backgroundColor:'#999', position:'absolute',
+              top:this.state.noseBasePosition.y,
+              left:this.state.noseBasePosition.x}}/>
+            <View style={{width:4, height:4, backgroundColor:'#EF0', position:'absolute',
+              top:this.state.rightCheekPosition.y,
+              left:this.state.rightCheekPosition.x}}/>
+            <View style={{width:4, height:4, backgroundColor:'#0D5', position:'absolute',
+              top:this.state.rightEyePosition.y,
+              left:this.state.rightEyePosition.x}}/>
+            <View style={{width:4, height:4, backgroundColor:'#33F', position:'absolute',
+              top:this.state.rightMouthPosition.y,
+              left:this.state.rightMouthPosition.x}}/>
 
 
             <View
